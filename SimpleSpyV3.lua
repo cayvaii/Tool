@@ -2402,13 +2402,11 @@ Button9897.InputBegan:Connect(function(input)
         mousePos9897 = input.Position
         framePos9897 = Button9897.Position
 
-        -- Toggle visibility and image change
         local ggmil9897 = game:GetService("CoreGui")["SimpleSpy Edit By cayvaii"]:FindFirstChild("Background")
         if ggmil9897 then
             ggmil9897.Visible = not ggmil9897.Visible
         end
 
-        -- Change button image on click
         if Button9897.Image == "rbxassetid://7072720870" then
             Button9897.Image = "rbxassetid://7072719338"
         else
