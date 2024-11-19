@@ -1,4 +1,7 @@
---[[steal = Gay]]
+--[[
+steal = Gay
+เสือก
+]]
 print("Edit By cayvaii")
 
 -- https://github.com/78n/SimpleSpy
