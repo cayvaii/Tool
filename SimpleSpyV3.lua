@@ -2409,8 +2409,10 @@ Button9897.InputBegan:Connect(function(input)
 
         if Button9897.Image == "rbxassetid://7072720870" then
             Button9897.Image = "rbxassetid://7072719338"
+	   ggmil9897.Visible = false
         else
             Button9897.Image = "rbxassetid://7072720870"
+	    ggmil9897.Visible = true
         end
 
         input.Changed:Connect(function()
