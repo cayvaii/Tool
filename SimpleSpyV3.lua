@@ -2340,90 +2340,102 @@ if configs.supersecretdevtoggle then
     end)
 end
 
-local frame9897 = game:GetService("CoreGui")["SimpleSpy Edit By cayvaii"].Background
-local UserInputService9897 = game:GetService("UserInputService")
-local dragging9897 = false
-local dragStart9897
-local startPos9897
+local CoreGui = game:GetService("CoreGui")
+local UserInputService = game:GetService("UserInputService")
 
-frame9897.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1 then
-        dragging9897 = true
-        dragStart9897 = input.Position
-        startPos9897 = frame9897.Position
-    end
-end)
-UserInputService9897.InputChanged:Connect(function(input)
-    if dragging9897 and (input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseMovement) then
-        local delta9897 = input.Position - dragStart9897
-        frame9897.Position = UDim2.new(startPos9897.X.Scale, startPos9897.X.Offset + delta9897.X, startPos9897.Y.Scale, startPos9897.Y.Offset + delta9897.Y)
-    end
-end)
-UserInputService9897.InputEnded:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1 then
-        dragging9897 = false
+local frame = CoreGui["SimpleSpy Edit By cayvaii"].Background
+local dragging, dragStart, startPos = false, nil, nil
+
+frame.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        dragging = true
+        dragStart = input.Position
+        startPos = frame.Position
     end
 end)
 
-local ScreenGui9897 = Instance.new("ScreenGui")
-local Button9897 = Instance.new("ImageButton")
-local UserInputService9897 = game:GetService("UserInputService")
+UserInputService.InputChanged:Connect(function(input)
+    if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+        local delta = input.Position - dragStart
+        frame.Position = UDim2.new(
+            startPos.X.Scale,
+            startPos.X.Offset + delta.X,
+            startPos.Y.Scale,
+            startPos.Y.Offset + delta.Y
+        )
+    end
+end)
 
-local dragging9897 = false
-local dragInput9897, mousePos9897, framePos9897
+UserInputService.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        dragging = false
+    end
+end)
 
-ScreenGui9897.Parent = game:GetService("CoreGui")["SimpleSpy Edit By cayvaii"]
-ScreenGui9897.Name = "RimuraHub | SimpleSpy"
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "RimuraHub | SimpleSpy"
+ScreenGui.Parent = CoreGui["SimpleSpy Edit By cayvaii"]
 
-Button9897.Parent = ScreenGui9897
-Button9897.Size = UDim2.new(0, 40, 0, 40)
-Button9897.Position = UDim2.new(0, 100, 0, 60)
-Button9897.Image = "rbxassetid://7072720870"
-Button9897.BackgroundTransparency = 0
-Button9897.BackgroundColor3 = Color3.fromRGB(53, 52, 55)
+local Button = Instance.new("ImageButton")
+Button.Size = UDim2.new(0, 40, 0, 40)
+Button.Position = UDim2.new(0, 100, 0, 60)
+Button.Image = "rbxassetid://7072720870"
+Button.BackgroundTransparency = 0
+Button.BackgroundColor3 = Color3.fromRGB(53, 52, 55)
+Button.Parent = ScreenGui
 
-local UICorner9897 = Instance.new("UICorner")
-UICorner9897.Parent = Button9897
-UICorner9897.CornerRadius = UDim.new(0, 8)
+local UICorner = Instance.new("UICorner")
+UICorner.CornerRadius = UDim.new(0, 8)
+UICorner.Parent = Button
 
-local function update9897(input)
-    local delta9897 = input.Position - mousePos9897
-    Button9897.Position = UDim2.new(
-        framePos9897.X.Scale,
-        framePos9897.X.Offset + delta9897.X,
-        framePos9897.Y.Scale,
-        framePos9897.Y.Offset + delta9897.Y
+local buttonDragging, buttonDragStart, buttonStartPos
+
+local function updateButtonPosition(input)
+    local delta = input.Position - buttonDragStart
+    Button.Position = UDim2.new(
+        buttonStartPos.X.Scale,
+        buttonStartPos.X.Offset + delta.X,
+        buttonStartPos.Y.Scale,
+        buttonStartPos.Y.Offset + delta.Y
     )
 end
 
-Button9897.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1 then
-        dragging9897 = true
-        mousePos9897 = input.Position
-        framePos9897 = Button9897.Position
+Button.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        buttonDragging = true
+        buttonDragStart = input.Position
+        buttonStartPos = Button.Position
 
-        local ggmil9897 = game:GetService("CoreGui")["SimpleSpy Edit By cayvaii"]:FindFirstChild("Background")
-        if ggmil9897 then
-            ggmil9897.Visible = not ggmil9897.Visible
+        local frame = CoreGui["SimpleSpy Edit By cayvaii"]:FindFirstChild("Background")
+        if frame then
+            frame.Visible = not frame.Visible
         end
 
-        if Button9897.Image == "rbxassetid://7072720870" then
-            Button9897.Image = "rbxassetid://7072719338"
-	   ggmil9897.Visible = false
+        if Button.Image == "rbxassetid://7072720870" then
+            Button.Image = "rbxassetid://7072719338"
         else
-            Button9897.Image = "rbxassetid://7072720870"
-	    ggmil9897.Visible = true
+            Button.Image = "rbxassetid://7072720870"
         end
 
         input.Changed:Connect(function()
             if input.UserInputState == Enum.UserInputState.End then
-                dragging9897 = false
+                buttonDragging = false
             end
         end)
     end
 end)
 
-Button9897.InputChanged:Connect(function(input)
+Button.InputChanged:Connect(function(input)
+    if buttonDragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+        updateButtonPosition(input)
+    end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+    if buttonDragging and input == buttonDragStart then
+        updateButtonPosition(input)
+    end
+end)
     if dragging9897 and (input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseMovement) then
         dragInput9897 = input
     end
